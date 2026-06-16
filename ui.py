@@ -41,26 +41,28 @@ def get_frontend_html() -> str:
                 const data = await res.json();
                 document.getElementById('uploadStatus').innerText = data.message || data.error;
             }
-            async function askQuestion() {
-                const question = document.getElementById('questionInput').value;
-                document.getElementById('answerOutput').innerText = "Thinking...";
-                document.getElementById('sourcesOutput').innerHTML = "";
-                const res = await fetch('/ask', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question: question })
-                });
-                const data = await res.json();
-                document.getElementById('answerOutput').innerText = data.answer;
-                if (data.sources && data.answer !== "I couldn't find that.") {
-                    data.sources.forEach((src, idx) => {
-                        const div = document.createElement('div');
-                        div.className = 'source';
-                        div.innerText = `[Source ${idx + 1}]: ${src}`;
-                        document.getElementById('sourcesOutput').appendChild(div);
-                    });
-                }
-            }
+          async function askQuestion() {
+    const question = document.getElementById('questionInput').value;
+    document.getElementById('answerOutput').innerText = "Thinking...";
+    document.getElementById('sourcesOutput').innerHTML = "";
+    
+    const res = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: question })
+    });
+    
+    const data = await res.json();
+    document.getElementById('answerOutput').innerText = data.answer;
+    
+    // FIX: Render the single 'source_chunk' string cleanly without using .forEach()
+    if (data.source_chunk && data.answer !== "I couldn't find that.") {
+        const div = document.createElement('div');
+        div.className = 'source';
+        div.innerText = `[Top Source Citation]: ${data.source_chunk}`;
+        document.getElementById('sourcesOutput').appendChild(div);
+    }
+}
         </script>
     </body>
     </html>

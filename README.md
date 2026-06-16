@@ -24,11 +24,12 @@ The project is designed to demonstrate the core RAG workflow, including document
 
 ```
 .
-├── main.py        # FastAPI application and API endpoints
-├── utils.py       # Chunking, embeddings, and similarity search
-├── config.py      # Environment configuration
-├── ui.py          # Frontend UI
-├── .env           # Environment variables (not committed)
+├── main.py         # FastAPI application and API endpoints
+├── utils.py        # Chunking, embeddings, and similarity search
+├── schemas.py      # Pydantic request and response schemas
+├── config.py       # Environment configuration
+├── ui.py           # Frontend UI
+├── .env            # Environment variables (not committed)
 └── README.md
 ```
 

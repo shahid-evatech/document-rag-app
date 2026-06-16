@@ -1,49 +1,27 @@
 import io
+
 import config  # Triggers network configuration and Gemini initialization
-from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-from pypdf import PdfReader
 import google.generativeai as genai
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.responses import HTMLResponse
+from pypdf import PdfReader
 
-# Import modular helper elements
+from schemas import AskRequest, QueryAnswerResponse, UploadSuccessResponse
 from ui import get_frontend_html
-from utils import chunk_text, get_embedding, cosine_similarity
-from schemas import UploadSuccessResponse, QueryAnswerResponse
+from utils import chunk_text, cosine_similarity, get_embedding
 
 app = FastAPI(
     title="Document Q&A RAG Engine",
     description="A lightweight, modular Retrieval-Augmented Generation prototype utilizing Gemini AI.",
-    version="1.0.0"
-)
-# Global In-Memory Vector Storage
-VECTOR_DATABASE = []
-
-class AskRequest(BaseModel):
-    question: str
-
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import HTMLResponse
-import io
-from pypdf import PdfReader
-import google.generativeai as genai
-
-# Import your custom modules and decoupled schemas
-from utils import chunk_text, get_embedding, cosine_similarity
-from schemas import UploadSuccessResponse, QueryAnswerResponse, AskRequest
-
-app = FastAPI(
-    title="Document Q&A RAG Engine",
-    description="A lightweight, modular Retrieval-Augmented Generation prototype utilizing Gemini AI.",
-    version="1.0.0"
+    version="1.0.0",
 )
 
+# Global in-memory vector storage
 VECTOR_DATABASE = []
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def frontend_ui():
     # Calling your frontend layout function from ui.py
-    from ui import get_frontend_html
     return get_frontend_html()
 
 
