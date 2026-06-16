@@ -12,13 +12,18 @@ def chunk_text(text: str, chunk_size: int = 600, chunk_overlap: int = 100) -> li
         start += chunk_size - chunk_overlap
     return chunks
 
-def get_embedding(text: str) -> list[float]:
-    """Generates vector embeddings using Gemini's stable embedding model."""
+from google.api_core.exceptions import RetryError, GoogleAPICallError
+
+def get_embedding(text: str, task_type: str = "retrieval_document") -> list[float]:
+    """
+    Generates a vector embedding for the given text using Gemini's stable embedding model.
+    Defaults to 'retrieval_document' for content chunking.
+    """
     try:
         result = genai.embed_content(
             model="models/gemini-embedding-001",
             content=text,
-            task_type="retrieval_document"
+            task_type=task_type
         )
         return result['embedding']
     except (RetryError, GoogleAPICallError) as net_err:
