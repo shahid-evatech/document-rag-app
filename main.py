@@ -1,11 +1,9 @@
 import io
-
 import config  # Triggers network configuration and Gemini initialization
 import google.generativeai as genai
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import HTMLResponse
 from pypdf import PdfReader
-
 from schemas import AskRequest, QueryAnswerResponse, UploadSuccessResponse
 from ui import get_frontend_html
 from utils import chunk_text, cosine_similarity, get_embedding
