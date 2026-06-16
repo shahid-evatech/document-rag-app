@@ -28,4 +28,35 @@ The application is structured following clean, modular engineering separation of
 
 ### 1. Clone & Enter Project Directory
 ```bash
+
+## 🛠️ How to Setup and Run the Project
+
+Follow these exact steps to isolate your environment, configure your API credentials, and launch the application locally.
+
+### 1. Clone & Enter Project Directory
+Open your terminal, navigate to your workspace, and step inside the root folder:
+```bash
 cd document-rag-app
+
+### 2. Initialize the Python Virtual Environment
+Create an isolated runtime environment to separate your project dependencies from your global system environment:
+Run this Command
+"python3 -m venv venv"
+
+Then activate the environment based on your current operating system:
+"source venv/bin/activate"
+
+### 3. Install Project Dependencies
+With your virtual environment active, run the package manager installation to download all required modules:
+"pip install fastapi uvicorn google-generativeai python-multipart numpy pypdf python-dotenv"
+
+### 4. Configure Your Environment Variables
+Create a brand new file named .env in the root folder of your project workspace. (Note: This file is excluded from source control via .gitignore to keep your private API credentials safe).
+
+Add your Google AI Studio API key inside the file exactly like this:
+
+"GEMINI_API_KEY=your_actual_gemini_api_key_here"
+
+### 5. Launch the Local Development Server
+Execute the application instance using Uvicorn with hot-reloading enabled:
+"uvicorn main:app --reload"
