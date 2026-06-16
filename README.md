@@ -1,62 +1,118 @@
 # Document Q&A Engine (RAG Prototype)
 
-A lightweight, modular Retrieval-Augmented Generation (RAG) system built with **FastAPI** and **Google Gemini AI**. The application allows users to upload `.txt` or `.pdf` documents, chunks the content, processes semantic embeddings, and handles grounded Q&A through an interactive UI without hallucinating.
+A lightweight Retrieval-Augmented Generation (RAG) application built with **FastAPI** and **Google Gemini AI**. The application enables users to upload `.txt` and `.pdf` documents, generates semantic embeddings for the document content, and answers questions using information retrieved from the uploaded document.
 
-## 📦 Dependencies & Package Breakdown
+The project is designed to demonstrate the core RAG workflow, including document ingestion, text chunking, embedding generation, vector similarity search, and grounded response generation.
 
-The core engine relies on a lightweight, production-ready stack designed for fast math operations and asynchronous API routing:
+---
 
-* **`fastapi`**: A modern, fast (high-performance) web framework for building APIs with Python based on standard Python type hints. It orchestrates our `/upload` and `/ask` routes.
-* **`uvicorn`**: An production-grade ASGI web server implementation for Python, used to serve and reload our FastAPI application instance.
-* **`google-generativeai`**: The official Google GenAI Python SDK. It handles communication with the remote Gemini API endpoint to retrieve document embeddings (`models/gemini-embedding-001`) and generate grounded text generation responses (`models/gemini-2.5-flash`).
-* **`python-multipart`**: Enables FastAPI to parse and process multi-part form data, allowing users to stream files via HTTP POST data inputs.
-* **`numpy`**: A fundamental library for scientific computing in Python. It converts raw array lists into optimized memory structures to compute vector-based cosine similarity logic over high-dimensional spaces natively in C speed.
-* **`pypdf`**: A pure-Python PDF library capable of splitting, merging, cropping, and transforming the pages of PDF files. In this app, it reads incoming binary files and extracts raw text data from PDF documents.
-* **`python-dotenv`**: Reads key-value pairs from a local `.env` file and sets them as environment variables, securely decoupling production credentials from application code.
+## 📦 Dependencies
 
-## 🏗️ Architecture Design
+| Package                 | Purpose                                                                  |
+| ----------------------- | ------------------------------------------------------------------------ |
+| **FastAPI**             | Builds the REST API and handles application routing.                     |
+| **Uvicorn**             | ASGI server used to run the FastAPI application.                         |
+| **google-generativeai** | Google Gemini SDK used for generating embeddings and grounded responses. |
+| **python-multipart**    | Enables file uploads through FastAPI.                                    |
+| **NumPy**               | Performs vector operations and cosine similarity calculations.           |
+| **PyPDF**               | Extracts text from uploaded PDF documents.                               |
+| **python-dotenv**       | Loads environment variables from a local `.env` file.                    |
 
-The application is structured following clean, modular engineering separation of concerns:
-* `main.py`: The orchestration layer managing API endpoints (`/`, `/upload`, `/ask`) and in-memory state.
-* `utils.py`: Core computational logic including overlapping text segmentation, embedding generation, and vector cosine similarity.
-* `config.py`: Environment management and system network optimization overrides.
-* `ui.py`: Isolated frontend user interface layer.
+---
+
+## 🏗️ Project Structure
+
+```
+.
+├── main.py        # FastAPI application and API endpoints
+├── utils.py       # Chunking, embeddings, and similarity search
+├── config.py      # Environment configuration
+├── ui.py          # Frontend UI
+├── .env           # Environment variables (not committed)
+└── README.md
+```
+
+### File Responsibilities
+
+* **main.py** – Defines the application, API routes, and request handling.
+* **utils.py** – Contains the document processing pipeline, embedding generation, and vector similarity logic.
+* **config.py** – Loads configuration values and environment variables.
+* **ui.py** – Implements the user interface.
+
+---
+
+## 🚀 Features
+
+* Upload `.txt` and `.pdf` documents
+* Automatic document text extraction
+* Text chunking for efficient retrieval
+* Semantic embeddings using Google Gemini
+* Cosine similarity search
+* Grounded question answering using retrieved document context
+* Simple FastAPI-based web interface
 
 ---
 
 ## 🛠️ Setup & Installation
 
-### 1. Clone & Enter Project Directory
+### 1. Clone the Repository
+
 ```bash
-
-## 🛠️ How to Setup and Run the Project
-
-Follow these exact steps to isolate your environment, configure your API credentials, and launch the application locally.
-
-### 1. Clone & Enter Project Directory
-Open your terminal, navigate to your workspace, and step inside the root folder:
-```bash
+git clone https://github.com/shahid-evatech/document-rag-app.git
 cd document-rag-app
+```
 
-### 2. Initialize the Python Virtual Environment
-Create an isolated runtime environment to separate your project dependencies from your global system environment:
-Run this Command
-"python3 -m venv venv"
+### 2. Create a Virtual Environment
 
-Then activate the environment based on your current operating system:
-"source venv/bin/activate"
+```bash
+python3 -m venv venv
+```
 
-### 3. Install Project Dependencies
-With your virtual environment active, run the package manager installation to download all required modules:
-"pip install fastapi uvicorn google-generativeai python-multipart numpy pypdf python-dotenv"
+### 3. Activate the Virtual Environment
 
-### 4. Configure Your Environment Variables
-Create a brand new file named .env in the root folder of your project workspace. (Note: This file is excluded from source control via .gitignore to keep your private API credentials safe).
 
-Add your Google AI Studio API key inside the file exactly like this:
+```bash
+source venv/bin/activate
+```
+### 4. Install Dependencies
 
-"GEMINI_API_KEY=your_actual_gemini_api_key_here"
+```bash
+pip install fastapi uvicorn google-generativeai python-multipart numpy pypdf python-dotenv
+```
 
-### 5. Launch the Local Development Server
-Execute the application instance using Uvicorn with hot-reloading enabled:
-"uvicorn main:app --reload"
+### 5. Configure Environment Variables
+
+Create a `.env` file in the project root and add your Gemini API key:
+
+```env
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+```
+
+### 6. Run the Application
+
+```bash
+uvicorn main:app --reload
+```
+
+The application will start at:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 🔄 Application Workflow
+
+1. Upload a `.txt` or `.pdf` document.
+2. Extract text from the uploaded file.
+3. Split the document into overlapping chunks.
+4. Generate embeddings for each chunk using Gemini.
+5. Store embeddings in memory.
+6. Convert the user's question into an embedding.
+7. Retrieve the most relevant document chunks using cosine similarity.
+8. Generate a grounded answer using the retrieved context.
+
+---
+
+
